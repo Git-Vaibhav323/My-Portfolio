@@ -4,8 +4,6 @@ import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { ReactNode } from "react";
 
-const BASE_PATH = "/assets/projects-screenshots";
-
 // Renders a brand SVG as a monochrome glyph that inherits the surrounding
 // text color (the skill dock styles every icon via currentColor).
 const MaskIcon = ({ src, title }: { src: string; title?: string }) => (
@@ -121,7 +119,7 @@ const projects: Project[] = [
     id: "unitalks",
     category: "Real-time chat platform",
     title: "UniTalks",
-    src: `${BASE_PATH}/unitalks/landing.png`,
+    src: "/unitalks.png",
     screenshots: [],
     skills: {
       frontend: [PROJECT_SKILLS.react, PROJECT_SKILLS.webrtc],
@@ -168,7 +166,7 @@ const projects: Project[] = [
     id: "baansinfra",
     category: "Portfolio & lead-generation platform",
     title: "Baansinfra",
-    src: `${BASE_PATH}/baansinfra/landing.png`,
+    src: "/baansinfra.png",
     screenshots: [],
     skills: {
       frontend: [PROJECT_SKILLS.react, PROJECT_SKILLS.tailwind],
@@ -210,7 +208,7 @@ const projects: Project[] = [
     id: "aurahonda",
     category: "Automotive dealership platform",
     title: "AuraHonda",
-    src: `${BASE_PATH}/aurahonda/landing.png`,
+    src: "/aurahonda.png",
     screenshots: [],
     skills: {
       frontend: [PROJECT_SKILLS.react],

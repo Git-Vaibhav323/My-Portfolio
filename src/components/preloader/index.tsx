@@ -48,11 +48,9 @@ function Preloader({ children, disabled = false }: PreloaderProps) {
   const [loadingPercent, setLoadingPercent] = useState(skip ? 100 : 0);
   const loadingTween = useRef<gsap.core.Tween>(null);
 
-  // The splash exists only to mask the Spline 3D scene loading. On low-end /
-  // reduced-motion devices that scene is never loaded, so its onLoad (which
-  // normally dismisses the splash) never fires — bypass immediately instead of
-  // leaving the page stuck behind the loader.
-  const { disable3D, ready: perfReady } = usePerfProfile();
+  // No Spline scene to wait on — dismiss as soon as perf detection is ready
+  // (the timed tween still runs as a short splash on first paint).
+  const { ready: perfReady } = usePerfProfile();
 
   const bypassLoading = () => {
     loadingTween.current?.progress(0.99).kill();
@@ -61,9 +59,9 @@ function Preloader({ children, disabled = false }: PreloaderProps) {
   };
 
   useEffect(() => {
-    if (perfReady && disable3D) bypassLoading();
+    if (perfReady) bypassLoading();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [perfReady, disable3D]);
+  }, [perfReady]);
   const loadingPercentRef = useRef<{ value: number }>({ value: 0 });
   useEffect(() => {
     if (skip) return;

@@ -27,20 +27,16 @@ const config = {
   // TODO: swap in your real deployed domain once you have one
   site: "https://vaibhavdwivedi.dev",
 
-  // for github stars button — update to your actual GitHub username/repo
-  githubUsername: "vaibhavpw",
-  githubRepo: "3d-portfolio",
+  // for github stars button
+  githubUsername: "Git-Vaibhav323",
+  githubRepo: "My-Portfolio",
 
   get ogImg() {
     return this.site + "/assets/seo/og-image.png";
   },
   social: {
-    // TODO: replace these placeholders with your real profile URLs
-    twitter: "https://x.com/vaibhavpw",
-    linkedin: "https://www.linkedin.com/in/vaibhav-dwivedi/",
-    instagram: "https://www.instagram.com/vaibhavpw",
-    facebook: "https://www.facebook.com/",
-    github: "https://github.com/vaibhavpw",
+    linkedin: "https://www.linkedin.com/in/vaibhav-dwivedi-64bds",
+    github: "https://github.com/Git-Vaibhav323",
   },
 };
 export { config };

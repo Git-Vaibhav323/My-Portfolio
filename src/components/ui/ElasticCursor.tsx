@@ -270,10 +270,16 @@ function ElasticCursor() {
         '[data-no-custom-cursor="true"]'
       );
       isHiddenRef.current = hide;
-      document.body.style.cursor = hide ? "auto" : "";
+      document.body.style.cursor = hide ? "auto" : "none";
     };
+    document.documentElement.style.cursor = "none";
+    document.body.style.cursor = "none";
     window.addEventListener("mousemove", onMove);
-    return () => window.removeEventListener("mousemove", onMove);
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      document.documentElement.style.cursor = "";
+      document.body.style.cursor = "";
+    };
   }, [isMobile, isBlogPost]);
 
   // Acquire/release targets via event delegation — fires once per target
@@ -354,13 +360,22 @@ function ElasticCursor() {
     };
   }, [isMobile, isBlogPost]);
 
-  // Preloader uses the blob as a loading bar.
+  // Preloader uses the blob as a loading bar; reset to the free-roam cursor after.
   useEffect(() => {
     if (!jellyRef.current) return;
-    jellyRef.current.style.height = "2rem";
-    jellyRef.current.style.borderRadius = "1rem";
-    jellyRef.current.style.width = loadingPercent * 2 + "vw";
-  }, [loadingPercent]);
+    if (isLoading) {
+      jellyRef.current.style.height = "2rem";
+      jellyRef.current.style.borderRadius = "1rem";
+      jellyRef.current.style.width = loadingPercent * 2 + "vw";
+    } else {
+      jelly.w = CURSOR_DIAMETER;
+      jelly.h = CURSOR_DIAMETER;
+      jelly.r = CURSOR_DIAMETER / 2;
+      jellyRef.current.style.width = `${CURSOR_DIAMETER}px`;
+      jellyRef.current.style.height = `${CURSOR_DIAMETER}px`;
+      jellyRef.current.style.borderRadius = `${CURSOR_DIAMETER / 2}px`;
+    }
+  }, [loadingPercent, isLoading, jelly]);
 
   useTicker(render, isLoading || !cursorMoved || isMobile || isBlogPost);
   if (isMobile || isBlogPost) return null;
@@ -380,6 +395,8 @@ function ElasticCursor() {
           boxSizing: "border-box",
           zIndex: 100,
           backdropFilter: "invert(100%)",
+          // Hide until the pointer moves (or while the preloader owns the blob).
+          opacity: isLoading || cursorMoved ? 1 : 0,
         }}
       ></div>
       <div

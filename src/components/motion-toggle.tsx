@@ -6,8 +6,8 @@ import { Button } from "./ui/button";
 
 /**
  * Menu control to toggle reduced motion. Flips the effective motion state to an
- * explicit, persisted preference: turning it off drops the 3D scene, particles
- * and decorative animations; turning it on brings them back — overriding the OS
+ * explicit, persisted preference: turning it off drops particles and decorative
+ * animations; turning it on brings them back — overriding the OS
  * `prefers-reduced-motion` setting either way.
  */
 export default function MotionToggle({ className }: { className?: string }) {
@@ -20,7 +20,7 @@ export default function MotionToggle({ className }: { className?: string }) {
     <Button
       onClick={() => setMotionPreference(reducedMotion ? "on" : "off")}
       aria-pressed={reducedMotion}
-      aria-label={motionOn ? "Reduce motion and disable 3D" : "Enable motion and 3D"}
+      aria-label={motionOn ? "Reduce motion" : "Enable motion"}
       className={'bg-transparent gap-2 flex text-muted group hover:bg-transparent border-2 text-xs'}
       size={'sm'}
     >

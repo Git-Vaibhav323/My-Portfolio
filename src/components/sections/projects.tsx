@@ -39,12 +39,11 @@ const ProjectCard = ({ project }: { project: Project }) => {
             className="group relative w-full max-w-[400px] h-auto rounded-lg overflow-hidden ring-1 ring-white/5"
             style={{ aspectRatio: "3/2" }}
           >
-            {/* `src` can be any aspect ratio (tall pages pan, normal ones fit);
-                the wallpaper is an optional /assets/backgrounds/<id>.jpg. */}
+            {/* `src` is the project cover; reuse it as the card wallpaper. */}
             <ScrollingPreview
               src={project.src}
               alt={project.title}
-              bg={`/assets/backgrounds/${project.id}.jpg`}
+              bg={project.src}
             />
             <div className="absolute w-full h-24 bottom-0 left-0 bg-gradient-to-t from-background via-background/80 to-transparent pointer-events-none z-10">
               <div className="flex flex-col h-full items-start justify-end p-4">
