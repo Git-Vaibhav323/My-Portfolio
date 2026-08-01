@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { ReactLenis, useLenis } from "@/lib/lenis";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger);
+// ScrollTrigger must not be imported at module scope: its bundle calls
+// Date.now() during evaluation, which Next.js cacheComponents treats as a
+// prerender error unless deferred behind a Suspense boundary / client effect.
 
 interface LenisProps {
   children: React.ReactNode;
@@ -13,12 +14,26 @@ interface LenisProps {
 }
 
 function SmoothScroll({ children, isInsideModal = false }: LenisProps) {
+  const scrollTriggerRef = useRef<{ update: () => void } | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    void import("gsap/ScrollTrigger").then(({ ScrollTrigger }) => {
+      if (cancelled) return;
+      gsap.registerPlugin(ScrollTrigger);
+      scrollTriggerRef.current = ScrollTrigger;
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   // Re-evaluate every ScrollTrigger on each Lenis scroll frame. Otherwise Lenis
   // smooths scrolling on its own loop while ScrollTrigger samples independently,
-  // so a fast flick jumps past a trigger's start line unevaluated and its
-  // onEnter/onLeaveBack (which drive the keyboard's active-section state) never
-  // fire — leaving section animations like the contact keycap "float" stuck.
-  const lenis = useLenis(() => ScrollTrigger.update());
+  // so a fast flick jumps past a trigger's start line unevaluated.
+  const lenis = useLenis(() => {
+    scrollTriggerRef.current?.update();
+  });
 
   useEffect(() => {
     if (!lenis) return;

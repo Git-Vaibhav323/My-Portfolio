@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { Space_Grotesk, Unbounded } from "next/font/google";
 import "./globals.css";
 import { config } from "@/data/config";
@@ -87,7 +88,11 @@ export default function RootLayout({
       </head>
       <body>
         <Providers>
-          <SiteFrame>{children}</SiteFrame>
+          {/* GSAP/ScrollTrigger call Date.now() on import; Suspense lets
+              cacheComponents prerender a static shell instead of erroring. */}
+          <Suspense fallback={null}>
+            <SiteFrame>{children}</SiteFrame>
+          </Suspense>
         </Providers>
         {process.env.NEXT_PUBLIC_GA_ID && (
           <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />

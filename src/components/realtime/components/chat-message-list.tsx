@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Users, Reply, Pencil, Loader2 } from "lucide-react";
 import { differenceInMinutes, format, isToday, isYesterday } from "date-fns";
@@ -135,6 +135,13 @@ export const ChatMessageList = ({
 }: ChatMessageListProps) => {
   const { setFollowingId, socket, reactions, profileMap } = useContext(SocketContext);
   const [pickerOpenFor, setPickerOpenFor] = useState<string | null>(null);
+  // Avoid Date.now()/new Date() during SSR prerender (cacheComponents).
+  const [now, setNow] = useState<number | null>(null);
+  useEffect(() => {
+    setNow(Date.now());
+    const id = window.setInterval(() => setNow(Date.now()), 30_000);
+    return () => window.clearInterval(id);
+  }, []);
 
   const grouped = useMemo(() => groupChatItems(msgs), [msgs]);
 
@@ -370,7 +377,9 @@ export const ChatMessageList = ({
                       open={pickerOpenFor === msg.id}
                       onOpenChange={(open) => setPickerOpenFor(open ? msg.id : null)}
                     />
-                    {isMe && differenceInMinutes(new Date(), msgDate) < 5 && (
+                    {isMe &&
+                      now != null &&
+                      differenceInMinutes(now, msgDate) < 5 && (
                       <button
                         type="button"
                         className={cn("p-1.5 rounded transition-colors", THEME.bg.hover, THEME.text.secondary)}
