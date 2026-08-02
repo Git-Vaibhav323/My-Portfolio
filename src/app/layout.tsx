@@ -57,6 +57,11 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  icons: {
+    icon: [{ url: "/letter-v.png", type: "image/png" }],
+    apple: [{ url: "/letter-v.png", type: "image/png" }],
+    shortcut: "/letter-v.png",
+  },
 };
 
 export default function RootLayout({
