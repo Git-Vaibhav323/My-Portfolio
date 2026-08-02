@@ -21,7 +21,7 @@ const ROBOT_SCENE_URL =
   "https://prod.spline.design/PyzDhpQ9E5f1E3MT/scene.splinecode";
 
 const HeroSection = () => {
-  const { isLoading } = usePreloader();
+  const { isLoading, markReady } = usePreloader();
 
   return (
     <SectionWrapper id="hero" className={cn("relative w-full h-screen overflow-hidden")}>
@@ -33,12 +33,15 @@ const HeroSection = () => {
           "pointer-events-auto overflow-hidden",
           // Soft-cut residual floor glow if Spline still paints it
           "[mask-image:linear-gradient(to_bottom,black_0%,black_78%,transparent_100%)]",
-          "[-webkit-mask-image:linear-gradient(to_bottom,black_0%,black_78%,transparent_100%)]"
+          "[-webkit-mask-image:linear-gradient(to_bottom,black_0%,black_78%,transparent_100%)]",
+          // Keep invisible until loader finishes so it doesn't pop mid-splash
+          isLoading ? "opacity-0" : "opacity-100 transition-opacity duration-500"
         )}
       >
         <InteractiveRobotSpline
           scene={ROBOT_SCENE_URL}
           className="absolute inset-0 h-full w-full scale-110 origin-center"
+          onReady={() => markReady("hero-scene")}
         />
       </div>
 
@@ -55,7 +58,7 @@ const HeroSection = () => {
           {!isLoading && (
             <div className="flex flex-col pointer-events-auto">
               <div>
-                <BlurIn delay={0.7}>
+                <BlurIn delay={0.2}>
                   <p
                     className={cn(
                       "md:self-start mt-4 font-medium text-md text-slate-500 dark:text-zinc-400",
@@ -67,7 +70,7 @@ const HeroSection = () => {
                   </p>
                 </BlurIn>
 
-                <BlurIn delay={1}>
+                <BlurIn delay={0.35}>
                   <Tooltip delayDuration={300}>
                     <TooltipTrigger asChild>
                       <h1
@@ -90,7 +93,7 @@ const HeroSection = () => {
                     </TooltipContent>
                   </Tooltip>
                 </BlurIn>
-                <BlurIn delay={1.2}>
+                <BlurIn delay={0.45}>
                   <p
                     className={cn(
                       "md:self-start md:mt-4 font-medium text-md text-slate-500 dark:text-zinc-400",
@@ -103,7 +106,7 @@ const HeroSection = () => {
               </div>
               <div className="mt-8 flex flex-col gap-3 w-fit">
                 <Link href={"/resume"} className="flex-1">
-                  <BoxReveal delay={2} width="100%" >
+                  <BoxReveal delay={0.55} width="100%" >
                     <Button className="flex items-center gap-2 w-full">
                       <File size={24} />
                       <p>Resume</p>

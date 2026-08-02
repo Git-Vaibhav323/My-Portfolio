@@ -9,6 +9,8 @@ const Spline = lazy(() => import("@splinetool/react-spline"));
 interface InteractiveRobotSplineProps {
   scene: string;
   className?: string;
+  /** Fires once the Spline scene has loaded (after platform hide). */
+  onReady?: () => void;
 }
 
 /** Names / patterns for the floor / platform under Whobee — hide these, keep the robot. */
@@ -69,10 +71,15 @@ function hidePlatformObjects(spline: Application) {
 export function InteractiveRobotSpline({
   scene,
   className,
+  onReady,
 }: InteractiveRobotSplineProps) {
-  const onLoad = useCallback((spline: Application) => {
-    hidePlatformObjects(spline);
-  }, []);
+  const onLoad = useCallback(
+    (spline: Application) => {
+      hidePlatformObjects(spline);
+      onReady?.();
+    },
+    [onReady],
+  );
 
   return (
     <Suspense
