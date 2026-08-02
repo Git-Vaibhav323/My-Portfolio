@@ -47,16 +47,13 @@ export default function Footer() {
           animate="enter"
           exit="exit"
         >
-          Blog
-        </motion.li>
-        <motion.li
-          custom={[0.3, 0]}
-          variants={translate}
-          initial="initial"
-          animate="enter"
-          exit="exit"
-        >
-          Newsletter
+          <a
+            href="https://da3-cn.blogspot.com/2026/04/phishing-traffic-analysis-and-malware.html"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Blog
+          </a>
         </motion.li>
       </ul>
     </div>

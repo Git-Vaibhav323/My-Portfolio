@@ -149,6 +149,12 @@ export const projectHighlights: ProjectHighlight[] = [
     detail:
       "Document-grounded Retrieval-Augmented Generation pipelines with LangChain, vector search, and LLMs — including production RAG work that cut inference latency by ~40%.",
   },
+  {
+    id: "researchpilot",
+    label: "Ongoing Project — ResearchPilot",
+    detail:
+      "AI-powered research intelligence platform combining fine-tuned LLMs, Retrieval-Augmented Generation (RAG), semantic search, and machine learning for paper analysis, abstract enhancement, statistical recommendations, and research gap discovery.",
+  },
 ];
 
 const projects: Project[] = [

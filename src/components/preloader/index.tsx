@@ -11,7 +11,6 @@ import { AnimatePresence } from "motion/react";
 import { usePathname } from "next/navigation";
 
 import Loader from "./loader";
-import gsap from "gsap";
 import { usePerfProfile } from "@/hooks/use-perf-profile";
 
 type PreloaderContextType = {
@@ -38,7 +37,9 @@ export const usePreloader = () => {
   }
   return context;
 };
+
 const LOADING_TIME = 2.5;
+
 function Preloader({ children, disabled = false }: PreloaderProps) {
   const pathname = usePathname();
   // Skip the loading splash for the résumé route (and anywhere it's disabled).
@@ -46,10 +47,12 @@ function Preloader({ children, disabled = false }: PreloaderProps) {
 
   const [isLoading, setIsLoading] = useState(!skip);
   const [loadingPercent, setLoadingPercent] = useState(skip ? 100 : 0);
-  const loadingTween = useRef<gsap.core.Tween>(null);
+  // gsap must not be imported at module scope — its ticker calls Date.now()
+  // during evaluation, which breaks Next.js cacheComponents prerender.
+  const loadingTween = useRef<{ progress: (n: number) => { kill: () => void }; kill: () => void } | null>(
+    null
+  );
 
-  // No Spline scene to wait on — dismiss as soon as perf detection is ready
-  // (the timed tween still runs as a short splash on first paint).
   const { ready: perfReady } = usePerfProfile();
 
   const bypassLoading = () => {
@@ -62,21 +65,27 @@ function Preloader({ children, disabled = false }: PreloaderProps) {
     if (perfReady) bypassLoading();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [perfReady]);
+
   const loadingPercentRef = useRef<{ value: number }>({ value: 0 });
   useEffect(() => {
     if (skip) return;
-    loadingTween.current = gsap.to(loadingPercentRef.current, {
-      value: 100,
-      duration: LOADING_TIME,
-      ease: "slow(0.7,0.7,false)",
-      onUpdate: () => {
-        setLoadingPercent(loadingPercentRef.current.value);
-      },
-      onComplete: () => {
-        setIsLoading(false);
-      },
+    let killed = false;
+    void import("gsap").then(({ default: gsap }) => {
+      if (killed) return;
+      loadingTween.current = gsap.to(loadingPercentRef.current, {
+        value: 100,
+        duration: LOADING_TIME,
+        ease: "slow(0.7,0.7,false)",
+        onUpdate: () => {
+          setLoadingPercent(loadingPercentRef.current.value);
+        },
+        onComplete: () => {
+          setIsLoading(false);
+        },
+      });
     });
     return () => {
+      killed = true;
       loadingTween.current?.kill();
     };
   }, [skip]);

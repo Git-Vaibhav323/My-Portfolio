@@ -14,7 +14,21 @@ function Footer() {
       <SocialMediaButtons />
       <nav className="flex gap-4 sm:gap-6 z-10">
         {footer.map((link, index) => {
-          const { title, href } = link;
+          const { title, href, external } = link;
+
+          if (external) {
+            return (
+              <a
+                className="text-xs underline-offset-4 hover:underline"
+                href={href}
+                key={`l_${index}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button variant={"link"}>{title}</Button>
+              </a>
+            );
+          }
 
           return (
             <Link
