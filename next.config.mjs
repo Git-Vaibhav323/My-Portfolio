@@ -1,7 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  cacheComponents: true,
+  // cacheComponents + GSAP's Date.now() on module load hang the "/" prerender
+  // in dev (blank "Loading..." screen). Leave off while GSAP is used client-side.
   async headers() {
     return [
       {
