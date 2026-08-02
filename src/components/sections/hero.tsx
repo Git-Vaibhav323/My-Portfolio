@@ -13,25 +13,47 @@ import { BlurIn, BoxReveal } from "../reveal-animations";
 import ScrollDownIcon from "../scroll-down-icon";
 import { SiGithub, SiLinkedin } from "react-icons/si";
 import { config } from "@/data/config";
+import { InteractiveRobotSpline } from "@/components/ui/interactive-3d-robot";
 
 import SectionWrapper from "../ui/section-wrapper";
+
+const ROBOT_SCENE_URL =
+  "https://prod.spline.design/PyzDhpQ9E5f1E3MT/scene.splinecode";
 
 const HeroSection = () => {
   const { isLoading } = usePreloader();
 
   return (
-    <SectionWrapper id="hero" className={cn("relative w-full h-screen")}>
-      <div className="grid md:grid-cols-2">
+    <SectionWrapper id="hero" className={cn("relative w-full h-screen overflow-hidden")}>
+      {/* Interactive 3D robot — right side of landing */}
+      <div
+        className={cn(
+          "absolute inset-y-0 right-0 z-[1]",
+          "hidden md:block w-[55%] lg:w-[50%]",
+          "pointer-events-auto overflow-hidden",
+          // Soft-cut residual floor glow if Spline still paints it
+          "[mask-image:linear-gradient(to_bottom,black_0%,black_78%,transparent_100%)]",
+          "[-webkit-mask-image:linear-gradient(to_bottom,black_0%,black_78%,transparent_100%)]"
+        )}
+      >
+        <InteractiveRobotSpline
+          scene={ROBOT_SCENE_URL}
+          className="absolute inset-0 h-full w-full scale-110 origin-center"
+        />
+      </div>
+
+      <div className="relative z-[2] grid md:grid-cols-2 pointer-events-none">
         <div
           className={cn(
-            "h-[calc(100dvh-3rem)] md:h-[calc(100dvh-4rem)] z-[2]",
+            "h-[calc(100dvh-3rem)] md:h-[calc(100dvh-4rem)]",
             "col-span-1",
             "flex flex-col justify-start md:justify-center items-center md:items-start",
-            "pt-28 sm:pb-16 md:p-20 lg:p-24 xl:p-28"
+            "pt-28 sm:pb-16 md:p-20 lg:p-24 xl:p-28",
+            "pointer-events-none"
           )}
         >
           {!isLoading && (
-            <div className="flex flex-col">
+            <div className="flex flex-col pointer-events-auto">
               <div>
                 <BlurIn delay={0.7}>
                   <p
@@ -68,7 +90,6 @@ const HeroSection = () => {
                     </TooltipContent>
                   </Tooltip>
                 </BlurIn>
-                {/* <div className="md:block hidden bg-gradient-to-r from-zinc-300/0 via-zinc-300/50 to-zinc-300/0 w-screen h-px animate-fade-right animate-glow" /> */}
                 <BlurIn delay={1.2}>
                   <p
                     className={cn(
@@ -130,9 +151,9 @@ const HeroSection = () => {
             </div>
           )}
         </div>
-        <div className="grid col-span-1"></div>
+        <div className="hidden md:block col-span-1" aria-hidden />
       </div>
-      <div className="absolute bottom-10 left-[50%] translate-x-[-50%]">
+      <div className="absolute bottom-10 left-[50%] translate-x-[-50%] z-[2] pointer-events-none">
         <ScrollDownIcon />
       </div>
     </SectionWrapper>

@@ -11,7 +11,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { motion } from "motion/react";
 
-import projects, { Project } from "@/data/projects";
+import projects, { projectHighlights, Project } from "@/data/projects";
 import { SectionHeader } from "./section-header";
 
 import SectionWrapper from "../ui/section-wrapper";
@@ -21,11 +21,39 @@ const ProjectsSection = () => {
   return (
     <SectionWrapper id="projects" className="max-w-7xl mx-auto md:min-h-[130vh] px-4">
       <SectionHeader id="projects" title="Projects" />
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {projects.map((project) => (
           <ProjectCard key={project.id} project={project} />
         ))}
       </div>
+
+      <ul className="mx-auto mt-12 max-w-4xl space-y-5 px-1">
+        {projectHighlights.map((item) => (
+          <li
+            key={item.id}
+            className="border-b border-border/60 pb-5 last:border-b-0"
+          >
+            <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
+              {item.label}
+            </p>
+            <p className="mt-2 font-display text-base font-medium leading-relaxed text-foreground md:text-lg">
+              {item.detail}
+            </p>
+            {item.href && (
+              <Link
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-2 inline-flex items-center gap-1 font-mono text-xs text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground"
+              >
+                View on GitHub
+                <ArrowUpRight className="size-3.5" />
+              </Link>
+            )}
+          </li>
+        ))}
+      </ul>
     </SectionWrapper>
   );
 };
@@ -83,7 +111,7 @@ const ProjectCard = ({ project }: { project: Project }) => {
                 {project.live && project.live !== "#" && (
                   <Link href={project.live} target="_blank">
                     <button className="group flex items-center gap-2 bg-primary text-primary-foreground text-sm font-medium px-4 py-1.5 rounded-full hover:bg-primary/80 transition-colors">
-                      Visit
+                      {project.liveLabel ?? "Visit"}
                       <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                     </button>
                   </Link>
@@ -113,7 +141,7 @@ const ProjectCard = ({ project }: { project: Project }) => {
                 {project.skills.backend?.length > 0 && (
                   <div className="flex flex-col items-center md:items-start gap-2">
                     <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-medium">
-                      Backend
+                      {project.skills.frontend?.length > 0 ? "Backend" : "Stack"}
                     </span>
                     <FloatingDock items={project.skills.backend} />
                   </div>

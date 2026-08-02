@@ -26,7 +26,15 @@ const MaskIcon = ({ src, title }: { src: string; title?: string }) => (
   />
 );
 
-const ProjectsLinks = ({ live, repo }: { live?: string; repo?: string }) => {
+const ProjectsLinks = ({
+  live,
+  repo,
+  liveLabel = "Visit Website",
+}: {
+  live?: string;
+  repo?: string;
+  liveLabel?: string;
+}) => {
   return (
     <div className="flex flex-col md:flex-row items-center justify-start gap-3 my-3 mb-8">
       {live && live !== "#" && (
@@ -37,7 +45,7 @@ const ProjectsLinks = ({ live, repo }: { live?: string; repo?: string }) => {
           href={live}
         >
           <Button variant={"default"} size={"sm"}>
-            Visit Website
+            {liveLabel}
             <ArrowUpRight className="ml-3 w-5 h-5" />
           </Button>
         </Link>
@@ -95,11 +103,16 @@ const PROJECT_SKILLS = {
   docker: brand("Docker", "docker-mono.svg"),
   tailwind: brand("Tailwind", "tailwind-css-mono.svg"),
   sockerio: brand("Socket.IO", "socketdotio-mono.svg"),
+  python: brand("Python", "python-mono.svg"),
   // Not in the local logo set — Simple Icons CDN mono glyphs.
   aws: brandUrl("AWS", "https://cdn.simpleicons.org/amazonaws"),
   nginx: brandUrl("Nginx", "https://cdn.simpleicons.org/nginx"),
   webrtc: brandUrl("WebRTC", "https://cdn.simpleicons.org/webrtc"),
   cloudinary: brandUrl("Cloudinary", "https://cdn.simpleicons.org/cloudinary"),
+  langchain: brandUrl("LangChain", "https://cdn.simpleicons.org/langchain"),
+  openai: brandUrl("OpenAI", "https://cdn.simpleicons.org/openai"),
+  pytorch: brandUrl("PyTorch", "https://cdn.simpleicons.org/pytorch"),
+  tensorflow: brandUrl("TensorFlow", "https://cdn.simpleicons.org/tensorflow"),
 };
 
 export type Project = {
@@ -112,7 +125,31 @@ export type Project = {
   content: React.ReactNode | any;
   github?: string;
   live: string;
+  liveLabel?: string;
 };
+
+/** Plain list items shown above the project cards (no image previews). */
+export type ProjectHighlight = {
+  id: string;
+  label: string;
+  detail: string;
+  href?: string;
+};
+
+export const projectHighlights: ProjectHighlight[] = [
+  {
+    id: "patent-stress-pain",
+    label: "Published Patent",
+    detail:
+      "System and Method for Stress and Pain Detection Using Multi-Scale Transformer-Based Neural Networks — Application No. 202641065281",
+  },
+  {
+    id: "rag-chatbot",
+    label: "RAG Chatbot",
+    detail:
+      "Document-grounded Retrieval-Augmented Generation pipelines with LangChain, vector search, and LLMs — including production RAG work that cut inference latency by ~40%.",
+  },
+];
 
 const projects: Project[] = [
   {
@@ -132,8 +169,9 @@ const projects: Project[] = [
         PROJECT_SKILLS.nginx,
       ],
     },
-    live: "https://unitalks.in",
-    // Under development — no public repo link yet
+    live: "https://drive.google.com/file/d/1SqRir59yfuxH8-fJdJNGHX07SGyiVH16/view?usp=sharing",
+    liveLabel: "View Video",
+    // Under development — demo via video
     get content() {
       return (
         <div>
@@ -146,7 +184,11 @@ const projects: Project[] = [
             voice/video, Redis session state, and an Nginx reverse proxy on
             AWS EC2 to support 1,000+ concurrent connections.
           </TypographyP>
-          <ProjectsLinks live={this.live} repo={this.github} />
+          <ProjectsLinks
+            live={this.live}
+            repo={this.github}
+            liveLabel={this.liveLabel}
+          />
 
           <TypographyH3 className="my-4 mt-8">
             Scaling &amp; deployment
