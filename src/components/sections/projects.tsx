@@ -67,12 +67,9 @@ const ProjectCard = ({ project }: { project: Project }) => {
             className="group relative w-full max-w-[400px] h-auto rounded-lg overflow-hidden ring-1 ring-white/5"
             style={{ aspectRatio: "3/2" }}
           >
-            {/* `src` is the project cover; reuse it as the card wallpaper. */}
-            <ScrollingPreview
-              src={project.src}
-              alt={project.title}
-              bg={project.src}
-            />
+            {/* Single cover image — don't pass the same src as wallpaper (that
+                created a nested picture-in-picture look). */}
+            <ScrollingPreview src={project.src} alt={project.title} />
             <div className="absolute w-full h-24 bottom-0 left-0 bg-gradient-to-t from-background via-background/80 to-transparent pointer-events-none z-10">
               <div className="flex flex-col h-full items-start justify-end p-4">
                 <div className="text-lg text-left [text-shadow:0_1px_4px_rgba(0,0,0,0.6)]">

@@ -84,6 +84,9 @@ const ScrollingPreview = ({
 
   const scrolls = scrollPx > 0;
   const animate = !reduceMotion && scrolls;
+  // Only use the inset "browser frame" when a separate wallpaper is provided.
+  // Same-src wallpaper + framed shot looks like picture-in-picture.
+  const framed = Boolean(bg);
 
   const pan = scrollPx / PAN_SPEED;
   const total = pan * 2 + PAUSE * 2;
@@ -101,33 +104,36 @@ const ScrollingPreview = ({
       role="img"
       aria-label={alt}
     >
-      {/* wallpaper background (falls back to a gradient when `bg` is absent) */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          backgroundColor: "#0f172a",
-          backgroundImage: bgReady && bg ? `url("${bg}")` : FALLBACK_BG,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      />
+      {/* wallpaper — only when a distinct bg is supplied */}
+      {framed && (
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            backgroundColor: "#0f172a",
+            backgroundImage: bgReady && bg ? `url("${bg}")` : FALLBACK_BG,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        />
+      )}
 
-      {/* floating screenshot panel */}
+      {/* screenshot panel — full-bleed when not framed */}
       <div
         ref={viewportRef}
         className="sp-shot"
         style={{
           position: "absolute",
-          left: 22,
-          right: 22,
-          top: 20,
+          left: framed ? 22 : 0,
+          right: framed ? 22 : 0,
+          top: framed ? 20 : 0,
           bottom: 0,
           overflow: "hidden",
-          borderRadius: 10,
-          boxShadow:
-            "0 24px 50px -12px rgba(8,20,55,0.55), 0 8px 18px -8px rgba(8,20,55,0.45)",
-          border: "1px solid rgba(255,255,255,0.18)",
+          borderRadius: framed ? 10 : 0,
+          boxShadow: framed
+            ? "0 24px 50px -12px rgba(8,20,55,0.55), 0 8px 18px -8px rgba(8,20,55,0.45)"
+            : undefined,
+          border: framed ? "1px solid rgba(255,255,255,0.18)" : undefined,
         }}
       >
         <motion.div

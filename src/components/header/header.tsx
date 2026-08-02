@@ -50,8 +50,8 @@ const Header = ({ loader }: HeaderProps) => {
       >
       </div> */}
       <div className={cn(styles.bar, "flex items-center justify-between")}>
-        <Link href="/" className="flex items-center justify-center">
-          <Button variant={"link"} className="text-md">
+        <Link href="/" className="flex min-w-0 items-center justify-center">
+          <Button variant={"link"} className="max-w-[42vw] truncate px-0 text-sm sm:max-w-none sm:text-md">
             {config.author}
           </Button>
         </Link>
@@ -62,7 +62,7 @@ const Header = ({ loader }: HeaderProps) => {
           <GitHubStarsButton
             username={config.githubUsername}
             repo={config.githubRepo}
-            className="mr-4"
+            className="mr-2 sm:mr-4 scale-90 sm:scale-100"
           />
         )}
         <Button

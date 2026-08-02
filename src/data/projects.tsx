@@ -205,7 +205,7 @@ const projects: Project[] = [
   },
   {
     id: "baansinfra",
-    category: "Portfolio & lead-generation platform",
+    category: "Bamboo Construction Site",
     title: "Baansinfra",
     src: "/baansinfra.png",
     screenshots: [],
@@ -222,8 +222,8 @@ const projects: Project[] = [
       return (
         <div>
           <TypographyP className="font-mono text-2xl text-center">
-            A project portfolio and lead-generation platform for a bamboo
-            construction and architecture firm.
+            A project portfolio and lead-generation platform for an architecture
+            firm.
           </TypographyP>
           <TypographyP className="font-mono ">
             Led full-stack development of baansinfra.com at ASSANJ, spanning

@@ -1,6 +1,8 @@
+"use client";
+
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button } from "../ui/button";
 import { File } from "lucide-react";
 import {
@@ -14,6 +16,7 @@ import ScrollDownIcon from "../scroll-down-icon";
 import { SiGithub, SiLinkedin } from "react-icons/si";
 import { config } from "@/data/config";
 import { InteractiveRobotSpline } from "@/components/ui/interactive-3d-robot";
+import { usePerfProfile } from "@/hooks/use-perf-profile";
 
 import SectionWrapper from "../ui/section-wrapper";
 
@@ -22,67 +25,90 @@ const ROBOT_SCENE_URL =
 
 const HeroSection = () => {
   const { isLoading, markReady } = usePreloader();
+  const { ready: perfReady, isMobile, disable3D } = usePerfProfile();
+  const robotHostRef = useRef<HTMLDivElement>(null);
+  const [robotInView, setRobotInView] = useState(true);
+
+  // Only mount WebGL on desktop with a real-sized, on-screen canvas.
+  // `hidden` / off-screen 0×0 canvases spam GL_INVALID_* in the console.
+  const wantRobot = perfReady && !isMobile && !disable3D;
+
+  useEffect(() => {
+    if (!wantRobot) return;
+    const el = robotHostRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => setRobotInView(entry.isIntersecting && entry.intersectionRatio > 0),
+      { threshold: [0, 0.05, 0.1] },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [wantRobot]);
 
   return (
-    <SectionWrapper id="hero" className={cn("relative w-full h-screen overflow-hidden")}>
-      {/* Interactive 3D robot — right side of landing */}
-      <div
-        className={cn(
-          "absolute inset-y-0 right-0 z-[1]",
-          "hidden md:block w-[55%] lg:w-[50%]",
-          "pointer-events-auto overflow-hidden",
-          // Soft-cut residual floor glow if Spline still paints it
-          "[mask-image:linear-gradient(to_bottom,black_0%,black_78%,transparent_100%)]",
-          "[-webkit-mask-image:linear-gradient(to_bottom,black_0%,black_78%,transparent_100%)]",
-          // Keep invisible until loader finishes so it doesn't pop mid-splash
-          isLoading ? "opacity-0" : "opacity-100 transition-opacity duration-500"
-        )}
-      >
-        <InteractiveRobotSpline
-          scene={ROBOT_SCENE_URL}
-          className="absolute inset-0 h-full w-full scale-110 origin-center"
-          onReady={() => markReady("hero-scene")}
-        />
-      </div>
+    <SectionWrapper id="hero" className={cn("relative w-full h-screen overflow-x-clip md:overflow-hidden")}>
+      {/* Interactive 3D robot — desktop only, unmounted when scrolled away */}
+      {wantRobot && (
+        <div
+          ref={robotHostRef}
+          className={cn(
+            "absolute inset-y-0 right-0 z-[1]",
+            "w-[55%] lg:w-[50%]",
+            "pointer-events-auto overflow-hidden",
+            "[mask-image:linear-gradient(to_bottom,black_0%,black_78%,transparent_100%)]",
+            "[-webkit-mask-image:linear-gradient(to_bottom,black_0%,black_78%,transparent_100%)]",
+            isLoading ? "opacity-0" : "opacity-100 transition-opacity duration-500"
+          )}
+        >
+          {robotInView && (
+            <InteractiveRobotSpline
+              scene={ROBOT_SCENE_URL}
+              className="absolute inset-0 h-full w-full scale-110 origin-center"
+              onReady={() => markReady("hero-scene")}
+            />
+          )}
+        </div>
+      )}
 
       <div className="relative z-[2] grid md:grid-cols-2 pointer-events-none">
         <div
           className={cn(
             "h-[calc(100dvh-3rem)] md:h-[calc(100dvh-4rem)]",
-            "col-span-1",
+            "col-span-1 w-full max-w-full",
             "flex flex-col justify-start md:justify-center items-center md:items-start",
-            "pt-28 sm:pb-16 md:p-20 lg:p-24 xl:p-28",
+            "px-5 pt-28 pb-16 sm:px-8 sm:pb-16 md:p-20 lg:p-24 xl:p-28",
             "pointer-events-none"
           )}
         >
           {!isLoading && (
-            <div className="flex flex-col pointer-events-auto">
-              <div>
+            <div className="flex w-full max-w-full flex-col pointer-events-auto md:max-w-none">
+              <div className="w-full min-w-0">
                 <BlurIn delay={0.2}>
                   <p
                     className={cn(
-                      "md:self-start mt-4 font-medium text-md text-slate-500 dark:text-zinc-400",
-                      "cursor-default sm:text-xl md:text-xl whitespace-nowrap bg-clip-text "
+                      "md:self-start mt-2 font-medium text-base text-slate-500 dark:text-zinc-400",
+                      "cursor-default sm:text-xl md:text-xl bg-clip-text"
                     )}
                   >
                     Hi, I am
-                    <br className="md:hidden" />
                   </p>
                 </BlurIn>
 
-                <BlurIn delay={0.35}>
+                <BlurIn delay={0.35} className="w-full min-w-0">
                   <Tooltip delayDuration={300}>
                     <TooltipTrigger asChild>
                       <h1
                         className={cn(
-                          "-ml-[6px] leading-none text-transparent text-slate-800 text-left",
-                          "font-bold text-7xl md:text-7xl lg:text-8xl xl:text-9xl",
-                          "cursor-default text-edge-outline font-display "
+                          "mt-1 w-full max-w-full text-left font-bold font-display",
+                          "cursor-default text-foreground tracking-tight",
+                          // Fit “Vaibhav” / “Dwivedi” to the phone width (Unbounded is wide)
+                          "text-[min(2.75rem,calc((100vw-2.75rem)/5.6))] leading-[0.95]",
+                          "sm:text-6xl sm:leading-none",
+                          "md:text-7xl lg:text-8xl xl:text-9xl"
                         )}
                       >
-                        {config.author.split(" ")[0]}
-                        <br className="md:block hiidden" />
-                        {config.author.split(" ")[1]}
+                        <span className="block">{config.author.split(" ")[0]}</span>
+                        <span className="block">{config.author.split(" ")[1]}</span>
                       </h1>
                     </TooltipTrigger>
                     <TooltipContent
@@ -96,16 +122,17 @@ const HeroSection = () => {
                 <BlurIn delay={0.45}>
                   <p
                     className={cn(
-                      "md:self-start md:mt-4 font-medium text-md text-slate-500 dark:text-zinc-400",
-                      "cursor-default sm:text-xl md:text-xl whitespace-nowrap bg-clip-text "
+                      "md:self-start mt-3 md:mt-4 font-medium text-sm text-slate-500 dark:text-zinc-400",
+                      "cursor-default sm:text-lg md:text-xl bg-clip-text",
+                      "max-w-[20rem] sm:max-w-none leading-snug"
                     )}
                   >
                     Full-Stack Developer &amp; AI/ML Engineer
                   </p>
                 </BlurIn>
               </div>
-              <div className="mt-8 flex flex-col gap-3 w-fit">
-                <Link href={"/resume"} className="flex-1">
+              <div className="mt-8 flex w-full max-w-sm flex-col gap-3 md:max-w-none md:w-fit">
+                <Link href={"/resume"} className="w-full flex-1">
                   <BoxReveal delay={0.55} width="100%" >
                     <Button className="flex items-center gap-2 w-full">
                       <File size={24} />
@@ -113,13 +140,13 @@ const HeroSection = () => {
                     </Button>
                   </BoxReveal>
                 </Link>
-                <div className="md:self-start flex gap-3">
+                <div className="flex w-full flex-wrap gap-3 md:self-start">
                   <Tooltip delayDuration={300}>
                     <TooltipTrigger asChild>
-                      <Link href={"#contact"} className="flex-1 min-w-[9.5rem]">
+                      <Link href={"#contact"} className="min-w-[8.5rem] flex-1 sm:flex-none sm:min-w-[9.5rem]">
                         <Button
                           variant={"outline"}
-                          className="block w-full overflow-hidden px-8"
+                          className="block w-full overflow-hidden px-6 sm:px-8"
                         >
                           Hire Me
                         </Button>
@@ -129,7 +156,7 @@ const HeroSection = () => {
                       <p>pls 🥹 🙏</p>
                     </TooltipContent>
                   </Tooltip>
-                  <div className="flex items-center h-full gap-2">
+                  <div className="flex items-center gap-2">
                     <Link
                       href={config.social.github}
                       target="_blank"
