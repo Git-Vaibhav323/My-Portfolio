@@ -44,15 +44,14 @@ const Index: React.FC<IndexProps> = ({ setIsActive }) => {
           />
         </div>
       </div>
-      {/* Subtle reduced-motion control, tucked into the bottom-right of the menu.
-          Stop propagation so toggling motion doesn't also close the menu. */}
+      {/* Reduced-motion control — desktop menu only (hidden on phone). */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ delay: 0.5, duration: 0.4 }}
         onClick={(e) => e.stopPropagation()}
-        className="absolute bottom-0 right-0"
+        className="absolute bottom-0 right-0 hidden md:block"
       >
         <MotionToggle />
       </motion.div>
