@@ -2,31 +2,29 @@
 export enum SkillNames {
   JS = "js",
   TS = "ts",
-  HTML = "html",
-  CSS = "css",
+  PYTHON = "python",
+  JAVA = "java",
+  C = "c",
   REACT = "react",
-  VUE = "vue",
   NEXTJS = "nextjs",
+  VUE = "vue",
   TAILWIND = "tailwind",
   NODEJS = "nodejs",
   EXPRESS = "express",
   POSTGRES = "postgres",
   MONGODB = "mongodb",
+  FIREBASE = "firebase",
+  DOCKER = "docker",
   GIT = "git",
   GITHUB = "github",
-  PRETTIER = "prettier",
   NPM = "npm",
-  FIREBASE = "firebase",
-  WORDPRESS = "wordpress",
   LINUX = "linux",
-  DOCKER = "docker",
   NGINX = "nginx",
   AWS = "aws",
   GCP = "gcp",
-  VIM = "vim",
   VERCEL = "vercel",
-  PYTHON = "python",
 }
+
 export type Skill = {
   id: number;
   name: string;
@@ -34,7 +32,12 @@ export type Skill = {
   shortDescription: string;
   color: string;
   icon: string;
+  /** Invert black logos so they stay visible on a dark background */
+  invertOnDark?: boolean;
 };
+
+const D = "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons";
+
 export const SKILLS: Record<SkillNames, Skill> = {
   [SkillNames.JS]: {
     id: 1,
@@ -42,7 +45,7 @@ export const SKILLS: Record<SkillNames, Skill> = {
     label: "JavaScript",
     shortDescription: "yeeting code into the DOM since '95, no cap! 💯🚀",
     color: "#f0db4f",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg",
+    icon: `${D}/javascript/javascript-original.svg`,
   },
   [SkillNames.TS]: {
     id: 2,
@@ -51,41 +54,40 @@ export const SKILLS: Record<SkillNames, Skill> = {
     shortDescription:
       "JavaScript's overachieving cousin who's always flexing 💯🔒",
     color: "#007acc",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg",
+    icon: `${D}/typescript/typescript-original.svg`,
   },
-  [SkillNames.HTML]: {
+  [SkillNames.PYTHON]: {
     id: 3,
-    name: "html",
-    label: "HTML",
-    shortDescription: "the internet's granddad,  still bussin' fr fr! 💀🔥",
-    color: "#e34c26",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
+    name: "python",
+    label: "Python",
+    shortDescription: "indentation as a religion, and honestly? valid. 🐍✨",
+    color: "#3776ab",
+    icon: `${D}/python/python-original.svg`,
   },
-  [SkillNames.CSS]: {
+  [SkillNames.JAVA]: {
     id: 4,
-    name: "css",
-    label: "CSS",
-    shortDescription: "styling with the ultimate drip, no cap 💁‍♂️🔥",
-    color: "#563d7c",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg",
+    name: "java",
+    label: "Java",
+    shortDescription: "write once, debug everywhere — still shipping though ☕",
+    color: "#ed8b00",
+    icon: `${D}/java/java-original.svg`,
+  },
+  [SkillNames.C]: {
+    id: 5,
+    name: "c",
+    label: "C",
+    shortDescription: "pointers, segfaults, and character development 🧠",
+    color: "#a8b9cc",
+    icon: `${D}/c/c-original.svg`,
   },
   [SkillNames.REACT]: {
-    id: 5,
+    id: 6,
     name: "react",
     label: "React",
     shortDescription: `"use using" 
 using use = useUsing("use")`,
     color: "#61dafb",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg",
-  },
-  [SkillNames.VUE]: {
-    id: 6,
-    name: "vue",
-    label: "Vue",
-    shortDescription:
-      "the chill pill for your frontend, it hits different! 🟢😌",
-    color: "#41b883",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vuejs/vuejs-original.svg",
+    icon: `${D}/react/react-original.svg`,
   },
   [SkillNames.NEXTJS]: {
     id: 7,
@@ -94,165 +96,197 @@ using use = useUsing("use")`,
     shortDescription:
       "the drama queen of front-end frameworks, and we stan! 👑📜",
     color: "#fff",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg",
+    icon: `${D}/nextjs/nextjs-original.svg`,
+    invertOnDark: true,
+  },
+  [SkillNames.VUE]: {
+    id: 8,
+    name: "vue",
+    label: "Vue",
+    shortDescription:
+      "the chill pill for your frontend, it hits different! 🟢😌",
+    color: "#41b883",
+    icon: `${D}/vuejs/vuejs-original.svg`,
   },
   [SkillNames.TAILWIND]: {
-    id: 8,
+    id: 9,
     name: "tailwind",
     label: "Tailwind",
     shortDescription: "utility classes hitting different fr fr 🌪️🔥",
     color: "#38bdf8",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-plain.svg",
+    icon: `${D}/tailwindcss/tailwindcss-original.svg`,
   },
   [SkillNames.NODEJS]: {
-    id: 9,
+    id: 10,
     name: "nodejs",
     label: "Node.js",
     shortDescription: "JavaScript said 'sike, I'm backend now', deadass! 🔙🔚",
     color: "#6cc24a",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg",
+    icon: `${D}/nodejs/nodejs-original.svg`,
   },
   [SkillNames.EXPRESS]: {
-    id: 10,
+    id: 11,
     name: "express",
     label: "Express",
     shortDescription: "middlewares go dummy hard, no cap! 🚂💨",
     color: "#fff",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg",
+    icon: `${D}/express/express-original.svg`,
+    invertOnDark: true,
   },
   [SkillNames.POSTGRES]: {
-    id: 11,
+    id: 12,
     name: "postgres",
     label: "PostgreSQL",
     shortDescription: "SQL but make it fashion, purr 💅🐘",
     color: "#336791",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg",
+    icon: `${D}/postgresql/postgresql-original.svg`,
   },
   [SkillNames.MONGODB]: {
-    id: 12,
+    id: 13,
     name: "mongodb",
     label: "MongoDB",
     shortDescription: "flexin' with that NoSQL drip, respectfully! 💪🍃",
-    color: "#336791",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg",
-  },
-  [SkillNames.GIT]: {
-    id: 13,
-    name: "git",
-    label: "Git",
-    shortDescription: "the code's personal bodyguard, no cap! 🕵️‍♂️🔄",
-    color: "#f1502f",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg",
-  },
-  [SkillNames.GITHUB]: {
-    id: 14,
-    name: "github",
-    label: "GitHub",
-    shortDescription: "sliding into those pull requests, IYKYK! 🐙",
-    color: "#000000",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg",
-  },
-  [SkillNames.PRETTIER]: {
-    id: 15,
-    name: "prettier",
-    label: "Prettier",
-    shortDescription: "making your code not a whole mess, thank u next 🧹✨",
-    color: "#f7b93a",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/prettier/prettier-original.svg",
-  },
-  [SkillNames.NPM]: {
-    id: 16,
-    name: "npm",
-    label: "NPM",
-    shortDescription: "package manager said 'I gotchu fam', period! 📦💯",
-    color: "#fff",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/npm/npm-original-wordmark.svg",
+    color: "#47a248",
+    icon: `${D}/mongodb/mongodb-original.svg`,
   },
   [SkillNames.FIREBASE]: {
-    id: 17,
+    id: 14,
     name: "firebase",
     label: "Firebase",
     shortDescription:
       "your app's ultimate wingman, but watch out, vendor lock-in vibes! 🔥👌",
     color: "#ffca28",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-plain.svg",
+    icon: `${D}/firebase/firebase-original.svg`,
   },
-  [SkillNames.WORDPRESS]: {
+  [SkillNames.DOCKER]: {
+    id: 15,
+    name: "docker",
+    label: "Docker",
+    shortDescription: "The best containerization! 🐳🔥",
+    color: "#2496ed",
+    icon: `${D}/docker/docker-original.svg`,
+  },
+  [SkillNames.GIT]: {
+    id: 16,
+    name: "git",
+    label: "Git",
+    shortDescription: "the code's personal bodyguard, no cap! 🕵️‍♂️🔄",
+    color: "#f1502f",
+    icon: `${D}/git/git-original.svg`,
+  },
+  [SkillNames.GITHUB]: {
+    id: 17,
+    name: "github",
+    label: "GitHub",
+    shortDescription: "sliding into those pull requests, IYKYK! 🐙",
+    color: "#fff",
+    icon: "https://cdn.simpleicons.org/github/FFFFFF",
+  },
+  [SkillNames.NPM]: {
     id: 18,
-    name: "wordpress",
-    label: "WordPress",
-    shortDescription: "the grandpa of CMS, still rocking that cane 🧓👴",
-    color: "#007acc",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/wordpress/wordpress-plain.svg",
+    name: "npm",
+    label: "NPM",
+    shortDescription: "package manager said 'I gotchu fam', period! 📦💯",
+    color: "#cb3837",
+    icon: `${D}/npm/npm-original-wordmark.svg`,
   },
   [SkillNames.LINUX]: {
     id: 19,
     name: "linux",
     label: "Linux",
     shortDescription: "where 'chmod 777' is the ultimate flex 🔓🙌",
-    color: "#fff",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg",
-  },
-  [SkillNames.DOCKER]: {
-    id: 20,
-    name: "docker",
-    label: "Docker",
-    shortDescription: "The best containerization! 🐳🔥",
-    color: "#2496ed",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg",
+    color: "#fcc624",
+    icon: `${D}/linux/linux-original.svg`,
   },
   [SkillNames.NGINX]: {
-    id: 21,
+    id: 20,
     name: "nginx",
-    label: "NginX",
+    label: "Nginx",
     shortDescription: "reverse proxy go zoom zoom, sheesh! 🚗💨",
-    color: "#008000",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nginx/nginx-original.svg",
+    color: "#009639",
+    icon: `${D}/nginx/nginx-original.svg`,
   },
   [SkillNames.AWS]: {
-    id: 22,
+    id: 21,
     name: "aws",
     label: "AWS",
     shortDescription:
       "always extra, making everything more complicated, period! 🌐👨‍💻",
     color: "#ff9900",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/aws/aws-original.svg",
+    icon: `${D}/amazonwebservices/amazonwebservices-plain-wordmark.svg`,
   },
   [SkillNames.GCP]: {
-    id: 25,
+    id: 22,
     name: "gcp",
     label: "Google Cloud",
     shortDescription:
       "cloud computing but make it Google vibes, living rent free! ☁️🔥",
     color: "#4285f4",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/googlecloud/googlecloud-original.svg",
-  },
-  [SkillNames.VIM]: {
-    id: 23,
-    name: "vim",
-    label: "Vim",
-    shortDescription: "exit? In this economy? Ight, imma head out! 🚪🏃",
-    color: "#e34c26",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vim/vim-original.svg",
+    icon: `${D}/googlecloud/googlecloud-original.svg`,
   },
   [SkillNames.VERCEL]: {
-    id: 24,
+    id: 23,
     name: "vercel",
     label: "Vercel",
     shortDescription:
-      "The triangle compony, helps you deploy and go touch grass! 🚀🌿",
-    color: "#6cc24a",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vercel/vercel-original.svg",
-  },
-  [SkillNames.PYTHON]: {
-    id: 26,
-    name: "python",
-    label: "Python",
-    shortDescription: "indentation as a religion, and honestly? valid. 🐍✨",
-    color: "#3776ab",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg",
+      "The triangle company, helps you deploy and go touch grass! 🚀🌿",
+    color: "#fff",
+    icon: `${D}/vercel/vercel-original.svg`,
+    invertOnDark: true,
   },
 };
+
+/** Display order for the tech stack grid. */
+export const SKILL_GROUPS: { title: string; skills: SkillNames[] }[] = [
+  {
+    title: "Languages",
+    skills: [
+      SkillNames.JS,
+      SkillNames.TS,
+      SkillNames.PYTHON,
+      SkillNames.JAVA,
+      SkillNames.C,
+    ],
+  },
+  {
+    title: "Frontend",
+    skills: [
+      SkillNames.REACT,
+      SkillNames.NEXTJS,
+      SkillNames.VUE,
+      SkillNames.TAILWIND,
+    ],
+  },
+  {
+    title: "Backend & Data",
+    skills: [
+      SkillNames.NODEJS,
+      SkillNames.EXPRESS,
+      SkillNames.POSTGRES,
+      SkillNames.MONGODB,
+      SkillNames.FIREBASE,
+    ],
+  },
+  {
+    title: "Tooling",
+    skills: [
+      SkillNames.GIT,
+      SkillNames.GITHUB,
+      SkillNames.NPM,
+      SkillNames.DOCKER,
+      SkillNames.LINUX,
+    ],
+  },
+  {
+    title: "Cloud & Infra",
+    skills: [
+      SkillNames.AWS,
+      SkillNames.GCP,
+      SkillNames.VERCEL,
+      SkillNames.NGINX,
+    ],
+  },
+];
 
 export type Experience = {
   id: number;
@@ -285,6 +319,26 @@ export const EXPERIENCE: Experience[] = [
   },
   {
     id: 2,
+    startDate: "Jan 2026",
+    endDate: "Present",
+    title: "Backend Developer",
+    company: "Cestrum",
+    description: [
+      "Building UniTalks — an anonymous real-time chat platform with voice/video via WebRTC, designed to scale to 1,000+ concurrent connections.",
+      "Owned backend architecture around Node.js, Socket.IO, and Redis Pub/Sub for distributed session state; containerized services with Docker and deployed behind Nginx on AWS EC2.",
+      "Set up GitHub Actions CI/CD to cut deployment time by ~75%; load-tested the stack at 150+ concurrent users to validate performance under real traffic.",
+    ],
+    skills: [
+      SkillNames.NODEJS,
+      SkillNames.REACT,
+      SkillNames.DOCKER,
+      SkillNames.AWS,
+      SkillNames.NGINX,
+      SkillNames.GIT,
+    ],
+  },
+  {
+    id: 3,
     startDate: "Dec 2025",
     endDate: "Feb 2026",
     title: "Generative AI Intern",
@@ -313,4 +367,3 @@ export const themeDisclaimers = {
     "Dark mode on! Finally, someone who understands true sophistication.",
   ],
 };
-

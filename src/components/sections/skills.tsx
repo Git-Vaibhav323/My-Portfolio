@@ -1,10 +1,58 @@
 "use client";
 
 import type { CSSProperties } from "react";
+import { motion } from "motion/react";
 import SectionWrapper from "../ui/section-wrapper";
 import { SectionHeader } from "./section-header";
-import { SKILLS } from "@/data/constants";
+import { SKILL_GROUPS, SKILLS, type Skill } from "@/data/constants";
 import { cn } from "@/lib/utils";
+
+function SkillItem({ skill, index }: { skill: Skill; index: number }) {
+  return (
+    <motion.li
+      initial={{ opacity: 0, y: 12 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 0.35, delay: index * 0.04, ease: "easeOut" }}
+      style={{ "--skill": skill.color } as CSSProperties}
+      className="group flex items-center gap-3.5"
+    >
+      <span
+        className={cn(
+          "relative flex size-12 shrink-0 items-center justify-center overflow-hidden",
+          "rounded-full border border-foreground/12 bg-background",
+          "transition-[border-color,box-shadow,transform] duration-300",
+          "group-hover:border-[var(--skill)]/70 group-hover:shadow-[inset_0_0_0_1px_var(--skill)]",
+        )}
+      >
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+          style={{
+            background:
+              "radial-gradient(circle at 30% 25%, color-mix(in srgb, var(--skill) 22%, transparent), transparent 65%)",
+          }}
+        />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={skill.icon}
+          alt=""
+          width={28}
+          height={28}
+          loading="lazy"
+          className={cn(
+            "relative size-7 object-contain transition-transform duration-300 group-hover:scale-110",
+            skill.invertOnDark && "dark:invert",
+          )}
+        />
+      </span>
+
+      <span className="font-display text-sm font-semibold tracking-tight text-foreground/90 transition-colors duration-200 group-hover:text-foreground md:text-[15px]">
+        {skill.label}
+      </span>
+    </motion.li>
+  );
+}
 
 const SkillsSection = () => {
   return (
@@ -16,41 +64,36 @@ const SkillsSection = () => {
         id="skills"
         title="Tech Stack"
         desc="Tools I build with"
-        className="static mb-14"
+        className="static mb-20"
       />
-      <ul className="mx-auto grid w-full max-w-5xl grid-cols-2 gap-3 px-4 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 lg:grid-cols-5">
-        {Object.values(SKILLS).map((skill) => (
-          <li
-            key={skill.name}
-            style={{ "--skill": skill.color } as CSSProperties}
-            className={cn(
-              "group relative flex flex-col items-center justify-center gap-3 overflow-hidden rounded-2xl p-5",
-              "border border-border/60 bg-secondary/20 backdrop-blur-sm",
-              "transition-[transform,border-color,background-color,box-shadow] duration-300",
-              "hover:-translate-y-1 hover:border-[var(--skill)] hover:bg-secondary/40",
-              "hover:shadow-[0_10px_40px_-12px_var(--skill)]",
-            )}
+
+      <div className="mx-auto w-full max-w-5xl space-y-16 px-4 md:space-y-20">
+        {SKILL_GROUPS.map((group, groupIndex) => (
+          <section
+            key={group.title}
+            aria-labelledby={`skill-group-${group.title}`}
+            className="grid gap-8 md:grid-cols-[minmax(0,11rem)_1fr] md:gap-12 lg:grid-cols-[minmax(0,14rem)_1fr]"
           >
-            <span
-              aria-hidden
-              style={{ background: "var(--skill)" }}
-              className="pointer-events-none absolute -top-6 h-16 w-16 rounded-full opacity-25 blur-2xl transition-opacity duration-300 group-hover:opacity-70"
-            />
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={skill.icon}
-              alt={skill.label}
-              width={44}
-              height={44}
-              loading="lazy"
-              className="relative size-9 object-contain drop-shadow-sm transition-transform duration-300 group-hover:scale-110 md:size-11"
-            />
-            <span className="relative text-center text-xs font-medium text-foreground/80 transition-colors group-hover:text-foreground md:text-sm">
-              {skill.label}
-            </span>
-          </li>
+            <header className="md:pt-1">
+              <p className="font-mono text-[11px] tracking-[0.2em] text-muted-foreground">
+                {String(groupIndex + 1).padStart(2, "0")}
+              </p>
+              <h3
+                id={`skill-group-${group.title}`}
+                className="mt-2 font-display text-2xl font-bold leading-none tracking-tight text-foreground md:text-3xl"
+              >
+                {group.title}
+              </h3>
+            </header>
+
+            <ul className="grid grid-cols-1 gap-x-10 gap-y-6 sm:grid-cols-2 lg:grid-cols-3">
+              {group.skills.map((name, i) => (
+                <SkillItem key={name} skill={SKILLS[name]} index={i} />
+              ))}
+            </ul>
+          </section>
         ))}
-      </ul>
+      </div>
     </SectionWrapper>
   );
 };

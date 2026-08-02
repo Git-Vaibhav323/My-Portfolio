@@ -11,9 +11,32 @@ export const EmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
   email,
   message,
 }) => (
-  <div>
-    <h1>from: {fullName}!</h1>
-    <div className="text-red-500">{email} sent you a message</div>
-    <blockquote>{message}</blockquote>
+  <div style={{ fontFamily: "sans-serif", lineHeight: 1.5, color: "#111" }}>
+    <h1 style={{ fontSize: "20px", marginBottom: "8px" }}>
+      New portfolio message
+    </h1>
+    <p style={{ margin: "0 0 4px" }}>
+      <strong>From:</strong> {fullName}
+    </p>
+    <p style={{ margin: "0 0 16px" }}>
+      <strong>Email:</strong>{" "}
+      <a href={`mailto:${email}`} style={{ color: "#2563eb" }}>
+        {email}
+      </a>
+    </p>
+    <p style={{ margin: "0 0 8px" }}>
+      <strong>Message:</strong>
+    </p>
+    <blockquote
+      style={{
+        margin: 0,
+        padding: "12px 16px",
+        borderLeft: "3px solid #d4d4d8",
+        background: "#fafafa",
+        whiteSpace: "pre-wrap",
+      }}
+    >
+      {message}
+    </blockquote>
   </div>
 );
