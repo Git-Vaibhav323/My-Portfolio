@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { ReactLenis, useLenis } from "@/lib/lenis";
+import type { gsap as GsapNS } from "gsap";
 
 // Do not import gsap/ScrollTrigger at module scope — both call Date.now()
 // during evaluation and break Next.js client prerender.
@@ -11,18 +12,9 @@ interface LenisProps {
   isInsideModal?: boolean;
 }
 
-type GsapLike = {
-  registerPlugin: (plugin: unknown) => void;
-  ticker: {
-    add: (fn: (time: number) => void) => void;
-    remove: (fn: (time: number) => void) => void;
-    lagSmoothing: (n: number) => void;
-  };
-};
-
 function SmoothScroll({ children, isInsideModal = false }: LenisProps) {
   const scrollTriggerRef = useRef<{ update: () => void } | null>(null);
-  const gsapRef = useRef<GsapLike | null>(null);
+  const gsapRef = useRef<typeof GsapNS | null>(null);
   const [gsapReady, setGsapReady] = useState(false);
 
   useEffect(() => {
@@ -53,7 +45,9 @@ function SmoothScroll({ children, isInsideModal = false }: LenisProps) {
     const raf = (time: number) => lenis.raf(time * 1000);
     gsap.ticker.add(raf);
     gsap.ticker.lagSmoothing(0);
-    return () => gsap.ticker.remove(raf);
+    return () => {
+      gsap.ticker.remove(raf);
+    };
   }, [lenis, gsapReady]);
 
   return (
