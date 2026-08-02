@@ -2,6 +2,7 @@ import { EmailTemplate } from "@/components/email-template";
 import { config } from "@/data/config";
 import { Resend } from "resend";
 import { z } from "zod";
+import type { ReactElement } from "react";
 
 const Email = z.object({
   fullName: z.string().min(2, "Full name is invalid!"),
@@ -70,7 +71,7 @@ export async function POST(req: Request) {
       to: [to],
       replyTo: email,
       subject: `Portfolio contact from ${fullName}`,
-      react: EmailTemplate({ fullName, email, message }),
+      react: EmailTemplate({ fullName, email, message }) as ReactElement,
     });
 
     if (error) {

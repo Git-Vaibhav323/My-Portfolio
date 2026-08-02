@@ -26,7 +26,9 @@ export async function POST(req: Request) {
 
   // Origin is browser-set, so it corroborates the reported host
   const origin = req.headers.get("origin") ?? "";
-  console.log(`[analytics] host=${host} origin=${origin}`);
+  if (process.env.NODE_ENV !== "production") {
+    console.log(`[analytics] host=${host} origin=${origin}`);
+  }
 
   const websiteId = process.env.UMAMI_DEPLOY_SITE_ID;
   if (websiteId && UMAMI_ORIGIN) {

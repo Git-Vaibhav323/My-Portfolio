@@ -1,0 +1,21 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "20"
+  NPM_FLAGS = "--legacy-peer-deps"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# Contact form + optional analytics need these in Netlify → Site settings → Environment variables:
+#   RESEND_API_KEY          (required for contact form)
+#   RESEND_FROM             (optional — verified domain sender)
+#   CONTACT_TO_EMAIL        (optional)
+#   NEXT_PUBLIC_WS_URL      (optional — realtime; leave unset to disable)
+#   UMAMI_SITE_ID           (optional)
+#   UMAMI_DOMAIN            (optional)
+#   UMAMI_DEPLOY_SITE_ID    (optional)
+#   NEXT_PUBLIC_GA_ID       (optional)
+#   NEXT_PUBLIC_LEGACY_HOST (optional)

@@ -92,8 +92,6 @@ const brandUrl = (title: string, url: string): Skill => ({
 
 const PROJECT_SKILLS = {
   react: brand("React.js", "react-mono.svg"),
-  ts: brand("TypeScript", "typescript-mono.svg"),
-  js: brand("JavaScript", "javascript-mono.svg"),
   node: brand("Node.js", "nodedotjs-mono.svg"),
   express: brand("Express", "express-mono.svg"),
   mongo: brand("MongoDB", "mongodb-mono.svg"),
@@ -103,16 +101,11 @@ const PROJECT_SKILLS = {
   docker: brand("Docker", "docker-mono.svg"),
   tailwind: brand("Tailwind", "tailwind-css-mono.svg"),
   sockerio: brand("Socket.IO", "socketdotio-mono.svg"),
-  python: brand("Python", "python-mono.svg"),
   // Not in the local logo set — Simple Icons CDN mono glyphs.
   aws: brandUrl("AWS", "https://cdn.simpleicons.org/amazonaws"),
   nginx: brandUrl("Nginx", "https://cdn.simpleicons.org/nginx"),
   webrtc: brandUrl("WebRTC", "https://cdn.simpleicons.org/webrtc"),
   cloudinary: brandUrl("Cloudinary", "https://cdn.simpleicons.org/cloudinary"),
-  langchain: brandUrl("LangChain", "https://cdn.simpleicons.org/langchain"),
-  openai: brandUrl("OpenAI", "https://cdn.simpleicons.org/openai"),
-  pytorch: brandUrl("PyTorch", "https://cdn.simpleicons.org/pytorch"),
-  tensorflow: brandUrl("TensorFlow", "https://cdn.simpleicons.org/tensorflow"),
 };
 
 export type Project = {

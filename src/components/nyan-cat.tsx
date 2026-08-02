@@ -48,7 +48,7 @@ const NyanCat = () => {
           <AnimatedDiv
             key={div.id}
             id={div.id}
-            onClick={() => console.log("clicked")}
+            onClick={() => {}}
             onCompleted={() => {
               setDivs(divs.filter((d) => d.id !== div.id));
             }}
