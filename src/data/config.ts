@@ -23,7 +23,7 @@ const config = {
     "Python",
   ],
   author: "Vaibhav Dwivedi",
-  email: "vaibhavpw2024@gmail.com",
+  email: "dwivedivaibhav3110@gmail.com",
   // TODO: swap in your real deployed domain once you have one
   site: "https://vaibhavdwivedi.dev",
 
